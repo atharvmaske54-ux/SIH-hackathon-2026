@@ -15,14 +15,7 @@ function InnerLayout() {
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} backgroundColor={Colors.background} />
       <Stack key={theme} screenOptions={{ headerShown: false, contentStyle: { backgroundColor: Colors.background } }}>
         <Stack.Screen name="index" />
-        <Stack.Screen name="auth" />
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="contacts" options={{ headerShown: true, title: 'Trusted Contacts', headerStyle: { backgroundColor: Colors.background }, headerTintColor: Colors.text }} />
-        <Stack.Screen name="alerts" options={{ headerShown: true, title: 'Alerts & Notifications', headerStyle: { backgroundColor: Colors.background }, headerTintColor: Colors.text }} />
-        <Stack.Screen name="fake-call" options={{ headerShown: true, title: 'Fake Call Setup', headerStyle: { backgroundColor: Colors.background }, headerTintColor: Colors.text }} />
-        <Stack.Screen name="check-in" options={{ headerShown: true, title: 'Safety Check-In', headerStyle: { backgroundColor: Colors.background }, headerTintColor: Colors.text }} />
-        <Stack.Screen name="share-location" options={{ headerShown: true, title: 'Live Location', headerStyle: { backgroundColor: Colors.background }, headerTintColor: Colors.text }} />
-        <Stack.Screen name="report-incident" options={{ headerShown: true, title: 'Report Safety Incident', headerStyle: { backgroundColor: Colors.background }, headerTintColor: Colors.text }} />
+        <Stack.Screen name="authority-dashboard" />
       </Stack>
       <AIChatbotFloating />
     </>
