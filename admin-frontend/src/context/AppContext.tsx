@@ -233,6 +233,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: `usr-admin-${Date.now()}`,
       name: userName,
       email: userEmail,
+      phone: '+91 98765 00000',
       role: selectedRole,
       collegeId: 'col-uom',
       collegeName: 'University of Mumbai',

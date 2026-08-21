@@ -35,8 +35,9 @@ export default function AdminDashboardIndex() {
     return <AuthorityDashboardScreen />;
   }
 
-  const handleLogin = async (overrideEmail?: string, overrideRole?: UserRole) => {
+  const handleLogin = async (overrideEmail?: string, overridePassword?: string, overrideRole?: UserRole) => {
     const targetEmail = overrideEmail || email;
+    const targetPassword = overridePassword || password;
     const targetRole = overrideRole || selectedRole;
 
     if (!targetEmail.trim() && !overrideEmail) {
@@ -46,7 +47,7 @@ export default function AdminDashboardIndex() {
 
     setLoading(true);
     try {
-      const res = await loginAdmin(targetEmail.trim(), password, targetRole);
+      const res = await loginAdmin(targetEmail.trim(), targetPassword, targetRole);
       setLoading(false);
       if (res.success) {
         router.replace('/authority-dashboard');

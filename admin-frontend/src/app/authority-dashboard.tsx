@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   View,
   Text,
@@ -64,11 +64,24 @@ export default function AuthorityDashboardScreen() {
   const userRole: UserRole = user?.role || 'student';
   const roleMeta = ROLE_DETAILS[userRole] || ROLE_DETAILS.student;
 
+  const getInitialPortalMode = (role: UserRole): 'monitoring' | 'security_response' | 'college_admin' => {
+    if (role === 'super_admin') return 'college_admin';
+    if (role === 'security_team') return 'security_response';
+    return 'monitoring';
+  };
+
   // Portal Mode State: 'monitoring' | 'security_response' | 'college_admin'
-  const [portalMode, setPortalMode] = useState<'monitoring' | 'security_response' | 'college_admin'>('monitoring');
+  const [portalMode, setPortalMode] = useState<'monitoring' | 'security_response' | 'college_admin'>(() =>
+    getInitialPortalMode(userRole)
+  );
+
+  useEffect(() => {
+    setPortalMode(getInitialPortalMode(userRole));
+    setIsAdminAuthorized(userRole === 'super_admin' || userRole === 'college_authority');
+  }, [userRole]);
 
   // Role Protection State
-  const [isAdminAuthorized, setIsAdminAuthorized] = useState<boolean>(userRole === 'super_admin');
+  const [isAdminAuthorized, setIsAdminAuthorized] = useState<boolean>(userRole === 'super_admin' || userRole === 'college_authority');
   const [showAuthPasscodeModal, setShowAuthPasscodeModal] = useState<boolean>(false);
   const [adminPasscode, setAdminPasscode] = useState<string>('');
 
