@@ -1,0 +1,32 @@
+{
+  "name": "saferoute-backend",
+  "version": "1.0.0",
+  "description": "SafeRoute & GuardianX Express + MongoDB Backend API Services",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node test_backend.js",
+    "seed": "node database/seed/seed_mongodb.js",
+    "ai-service": "cd ai-service && python app.py"
+  },
+  "keywords": [
+    "saferoute",
+    "women-safety",
+    "rbac",
+    "mongodb",
+    "emergency-sos"
+  ],
+  "author": "SafeRoute Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.3",
+    "multer": "^2.2.0"
+  }
+}
+

@@ -1,56 +1,126 @@
-# Welcome to your Expo app 👋
+# 🛡️ SafeRoute & GuardianX Women Safety Platform
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+> **Comprehensive Full-Stack Safety System**: Mobile Application, Admin Command Dashboard, Node.js + Express API Backend, Python AI Microservice, and MongoDB Atlas Integration.
 
-## Get started
+---
 
-1. Install dependencies
+## 📁 Repository Directory Structure
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```text
+final_year_project/
+├── admin-frontend/         # React / Expo Web Admin & Authority Command Center
+├── backend/                # Node.js + Express API & Microservice Hub
+│   ├── ai-service/         # Python Flask AI Risk Analysis & Chatbot Engine
+│   ├── config/             # Database & Server Configuration
+│   ├── controllers/        # Express Route Controllers (Auth, SOS, Incidents, Maps, Admin)
+│   ├── database/           # Mongoose Models & Data Handlers
+│   ├── middleware/         # Auth, Role-Based Access Control (RBAC), File Uploads
+│   ├── models/             # Mongoose Schemas (User, Incident, SOSAlert, Zone, AuditLog)
+│   ├── routes/             # RESTful API Route Definitions
+│   ├── store/              # File System Fallback Data Store
+│   ├── uploads/            # Evidence & Audio File Storage
+│   └── server.js           # Server Entry Point & Process Manager
+├── docs/                   # System Documentation & Reports
+│   ├── SafeRoute.docx                                  # Project Documentation Manual
+│   ├── SafeRoute_Structure.md                          # Technical Architecture Breakdown
+│   ├── comprehensive_system_report.md                 # Full System Analysis & Audit Report
+│   ├── full_safety_modules_integration_walkthrough.md # Module Integration Walkthrough
+│   └── gaurdianX_report.pdf                            # GuardianX System Specification Report
+├── frontend/               # React Native + Expo User Mobile Application
+├── uploads/                # Root Upload Directory
+├── .gitignore              # Repository Git Ignore Specifications
+├── LICENSE                 # MIT License
+├── package.json            # Root Orchestrator Scripts
+└── README.md               # Master Project Manual
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-### Other setup steps
+## 🚀 Getting Started & Startup Commands
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Run all commands from the repository root:
 
-## Learn more
+### 1. Installation
+Install root dependencies:
+```bash
+npm install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### 2. Available NPM Scripts
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+| Component | Command | Description |
+| :--- | :--- | :--- |
+| **Backend API** | `npm run start:backend` | Starts Node.js + Express Server (`http://localhost:5000`) |
+| **User Mobile App** | `npm run start:frontend` | Launches Expo Metro Bundler for User Mobile App |
+| **Admin Dashboard** | `npm run start:admin` | Launches Admin Command & Telemetry Web Application |
+| **AI Microservice** | `npm run start:ai` | Starts Python Flask AI Risk & Chatbot Engine (`http://localhost:5001`) |
+| **Backend Test Suite** | `npm run test:backend` | Runs E2E API Verification Suite |
+| **MongoDB Seeder** | `npm run seed:mongodb` | Seeds MongoDB database with initial sample dataset |
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## ⚙️ Environment Configuration
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+1. Copy `backend/.env.example` to `backend/.env`:
+   ```bash
+   cp backend/.env.example backend/.env
+   ```
+2. Update the environment variables in `backend/.env`:
+   ```env
+   PORT=5000
+   NODE_ENV=development
+   MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/women_safety_db?retryWrites=true&w=majority
+   JWT_SECRET=your_jwt_secret_key_here
+   ADMIN_PASSCODE=YOUR_ADMIN_PASSCODE_HERE
+   AI_SERVICE_URL=http://localhost:5001
+   ```
+
+---
+
+## 🗄️ Architecture & Module Summary
+
+### 1. User Mobile App (`frontend/`)
+- **Technology**: React Native, Expo Router, TypeScript, React Context.
+- **Key Features**:
+  - One-Touch SOS Signal Broadcast.
+  - Interactive Safe Navigation Heatmaps & Safe Zone Overlays.
+  - Incident Reporting with Audio & Image Attachment Uploads.
+  - Companion Walk Check-in Timer with Auto-Escalation.
+  - Floating 6-Petal AI Safety Assistant Chatbot.
+
+### 2. Admin & Authority Command Center (`admin-frontend/`)
+- **Technology**: React Native Web, Expo, Custom Dashboard Widgets.
+- **Key Features**:
+  - Live Emergency SOS Dispatcher & Real-Time Telemetry Cards.
+  - 5-Stage Incident Verification Workflow (`Submitted` ➔ `Under Review` ➔ `Verified` ➔ `Action Taken` ➔ `Resolved`).
+  - Patrol Alpha Dispatch & Security Asset Management.
+  - Broadcast Emergency Alerts to Campus / Community Users.
+
+### 3. Express API & MongoDB Backend (`backend/`)
+- **Technology**: Node.js, Express.js, Mongoose ORM, MongoDB Atlas.
+- **Key Features**:
+  - Secure JWT Authentication & Role-Based Access Control (`User`, `Admin`, `Responder`).
+  - Auto-Spawning / Monitoring of Embedded Python Flask AI Engine.
+  - Seamless Failover between Cloud Database and Local File Data Store.
+
+### 4. AI Risk Engine (`backend/ai-service/`)
+- **Technology**: Python 3, Flask, Custom Heuristic Risk Scoring.
+- **Key Features**:
+  - Real-time Location Safety Assessment (Heatmaps & Risk Indexing).
+  - Contextual Safety Advisory AI Assistant.
+
+---
+
+## 📄 Documentation Directory (`docs/`)
+
+The `docs/` folder contains complete project reports, architecture documents, and walkthrough guides:
+- [SafeRoute Structure Guide](docs/SafeRoute_Structure.md)
+- [Comprehensive System Report](docs/comprehensive_system_report.md)
+- [Full Integration Walkthrough](docs/full_safety_modules_integration_walkthrough.md)
+- [SafeRoute Word Manual](docs/SafeRoute.docx)
+- [GuardianX PDF Report](docs/gaurdianX_report.pdf)
+
+---
+
+## 📜 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

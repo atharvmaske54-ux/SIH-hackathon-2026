@@ -1,0 +1,5 @@
+latitude,longitude,incident_type,time_of_day,lighting_quality,risk_score
+19.0486,72.9393,Stalking,night,poor,85
+19.0650,72.8794,Harassment,evening,medium,65
+18.9548,72.7985,Infrastructure,day,good,15
+19.1334,72.9133,Sexual Harassment,late_night,poor,95
