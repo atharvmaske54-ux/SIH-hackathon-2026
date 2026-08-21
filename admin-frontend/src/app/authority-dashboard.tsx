@@ -51,7 +51,15 @@ export default function AuthorityDashboardScreen() {
     setSelectedCollegeId,
     selectedCampusId,
     setSelectedCampusId,
+    isAdminAuthenticated,
+    logoutAdmin,
   } = useAppContext();
+
+  useEffect(() => {
+    if (!isAdminAuthenticated) {
+      router.replace('/');
+    }
+  }, [isAdminAuthenticated]);
 
   const userRole: UserRole = user?.role || 'student';
   const roleMeta = ROLE_DETAILS[userRole] || ROLE_DETAILS.student;
@@ -677,6 +685,17 @@ export default function AuthorityDashboardScreen() {
             Logged as: {user?.name || 'Authority Officer'} ({user?.email})
           </Text>
         </View>
+
+        <TouchableOpacity
+          style={styles.logoutHeaderBtn}
+          onPress={async () => {
+            await logoutAdmin();
+            router.replace('/');
+          }}
+        >
+          <FontAwesome5 name="sign-out-alt" size={13} color="#EF4444" style={{ marginRight: 6 }} />
+          <Text style={styles.logoutHeaderBtnText}>Log Out / Main Page</Text>
+        </TouchableOpacity>
       </View>
 
       {/* TOP PORTAL MODE TAB SWITCHER (FILTERED BY RBAC PERMISSIONS) */}
@@ -1476,4 +1495,20 @@ const getStyles = () => StyleSheet.create({
   modalBtnSecondaryText: { color: Colors.text, fontSize: 11, fontWeight: 'bold' },
   modalCloseBtn: { backgroundColor: Colors.primary, paddingVertical: 10, borderRadius: 10, alignItems: 'center', marginTop: 10 },
   modalCloseBtnText: { color: Colors.white, fontSize: 12, fontWeight: 'bold' },
+  logoutHeaderBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#EF444415',
+    borderWidth: 1,
+    borderColor: '#EF444440',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    marginLeft: 10,
+  },
+  logoutHeaderBtnText: {
+    color: '#EF4444',
+    fontSize: 12,
+    fontWeight: '600',
+  },
 });

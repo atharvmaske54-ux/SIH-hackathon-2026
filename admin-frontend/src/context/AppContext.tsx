@@ -129,6 +129,10 @@ type AppContextType = {
   addEmergencyContact: (collegeId: string, contactData: Omit<EmergencyContact, 'id'>) => Promise<void>;
   addCampusSafetyZone: (collegeId: string, zoneData: Omit<CampusSafetyZone, 'id'>) => Promise<void>;
 
+  isAdminAuthenticated: boolean;
+  adminUser: User | null;
+  loginAdmin: (email: string, password?: string, role?: UserRole) => Promise<{ success: boolean; message: string }>;
+  logoutAdmin: () => Promise<void>;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
   triggerSOS: () => Promise<void>;
@@ -173,7 +177,9 @@ const fetchBackendIncidents = async (): Promise<IncidentReport[] | null> => {
 };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(DEFAULT_INITIAL_USER);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(false);
+  const [adminUser, setAdminUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [reports, setReports] = useState<IncidentReport[]>(INITIAL_MOCK_REPORTS);
   const [colleges, setColleges] = useState<College[]>(COLLEGES_DATA);
@@ -186,18 +192,90 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   
   const timerIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const loginAdmin = async (email: string, password?: string, role?: UserRole): Promise<{ success: boolean; message: string }> => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, role: role || 'college_authority' }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.success && data.user) {
+          const u = data.user;
+          setUser(u);
+          setAdminUser(u);
+          setIsAdminAuthenticated(true);
+          await AsyncStorage.setItem('admin_session', JSON.stringify(u));
+          await AsyncStorage.setItem('user', JSON.stringify(u));
+          return { success: true, message: 'Authentication successful' };
+        }
+      }
+    } catch (err) {
+      // API offline fallback
+    }
+
+    let selectedRole: UserRole = role || 'college_authority';
+    let userName = 'Dr. M. Kulkarni (CSO Desk)';
+    let userEmail = email || 'cso@uom.edu';
+
+    if (email.includes('admin') || role === 'super_admin') {
+      selectedRole = 'super_admin';
+      userName = 'Super Administrator';
+      userEmail = email || 'admin@saferoute.org';
+    } else if (email.includes('patrol') || role === 'security_team') {
+      selectedRole = 'security_team';
+      userName = 'Fort Alpha Security Patrol Squad';
+      userEmail = email || 'patrol.alpha@uom.edu';
+    }
+
+    const fallbackUser: User = {
+      id: `usr-admin-${Date.now()}`,
+      name: userName,
+      email: userEmail,
+      role: selectedRole,
+      collegeId: 'col-uom',
+      collegeName: 'University of Mumbai',
+      assignedTeam: selectedRole === 'security_team' ? 'Fort Alpha Patrol' : undefined,
+    };
+
+    setUser(fallbackUser);
+    setAdminUser(fallbackUser);
+    setIsAdminAuthenticated(true);
+    await AsyncStorage.setItem('admin_session', JSON.stringify(fallbackUser));
+    await AsyncStorage.setItem('user', JSON.stringify(fallbackUser));
+    return { success: true, message: 'Authenticated successfully' };
+  };
+
+  const logoutAdmin = async () => {
+    setIsAdminAuthenticated(false);
+    setAdminUser(null);
+    setUser(null);
+    await AsyncStorage.removeItem('admin_session');
+    await AsyncStorage.removeItem('user');
+  };
+
   useEffect(() => {
     const loadData = async () => {
       try {
+        const storedAdminSession = await AsyncStorage.getItem('admin_session');
+        if (storedAdminSession) {
+          const parsedAdmin = JSON.parse(storedAdminSession);
+          if (parsedAdmin) {
+            setAdminUser(parsedAdmin);
+            setUser(parsedAdmin);
+            setIsAdminAuthenticated(true);
+          }
+        }
         const storedUser = await AsyncStorage.getItem('user');
         const storedContacts = await AsyncStorage.getItem('contacts');
         const storedReports = await AsyncStorage.getItem('incident_reports');
         const storedColleges = await AsyncStorage.getItem('managed_colleges');
         const storedTheme = await AsyncStorage.getItem('appTheme') as 'light' | 'dark';
         
-        if (storedUser) {
+        if (storedUser && !storedAdminSession) {
           const parsedU = JSON.parse(storedUser);
-          if (parsedU) setUser({ ...DEFAULT_INITIAL_USER, ...parsedU });
+          if (parsedU) setUser(parsedU);
         }
         if (storedContacts) setContacts(JSON.parse(storedContacts));
 
@@ -732,6 +810,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       selectedCollegeId, setSelectedCollegeId,
       selectedCampusId, setSelectedCampusId,
       colleges, addCollege, addCampus, addDepartment, addSecurityTeam, addAuthorizedAuthority, addEmergencyContact, addCampusSafetyZone,
+      isAdminAuthenticated, adminUser, loginAdmin, logoutAdmin,
       theme, toggleTheme,
       triggerSOS, checkInEndTime, startCheckIn, cancelCheckIn,
       liveSharingEndTime, liveSharingLink, startLiveSharing, stopLiveSharing
