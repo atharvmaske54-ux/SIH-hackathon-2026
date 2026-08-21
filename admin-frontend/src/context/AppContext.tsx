@@ -380,6 +380,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     setUser(updatedUser);
     await AsyncStorage.setItem('user', JSON.stringify(updatedUser));
+
+    if (newRole === 'student') {
+      setIsAdminAuthenticated(false);
+      setAdminUser(null);
+      await AsyncStorage.removeItem('admin_session');
+    } else {
+      setIsAdminAuthenticated(true);
+      setAdminUser(updatedUser);
+      await AsyncStorage.setItem('admin_session', JSON.stringify(updatedUser));
+    }
   };
 
   const addContact = async (contactInfo: Omit<Contact, 'id'>) => {

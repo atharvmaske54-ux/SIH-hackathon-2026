@@ -658,8 +658,14 @@ export default function AuthorityDashboardScreen() {
             })}
           </View>
 
-          <TouchableOpacity style={styles.modalBtnSecondary} onPress={() => router.back()}>
-            <Text style={styles.modalBtnSecondaryText}>← Return to Student View</Text>
+          <TouchableOpacity
+            style={styles.modalBtnSecondary}
+            onPress={async () => {
+              await logoutAdmin();
+              router.replace('/');
+            }}
+          >
+            <Text style={styles.modalBtnSecondaryText}>← Return to Admin Sign In Page</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
