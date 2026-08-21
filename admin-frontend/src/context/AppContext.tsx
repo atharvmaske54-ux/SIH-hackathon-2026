@@ -159,7 +159,7 @@ const INITIAL_MOCK_REPORTS: IncidentReport[] = [];
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://saferoute-backend-0udn.onrender.com/api/v1';
 
 const fetchBackendIncidents = async (): Promise<IncidentReport[] | null> => {
   try {
