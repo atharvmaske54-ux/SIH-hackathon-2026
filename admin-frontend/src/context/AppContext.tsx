@@ -259,25 +259,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const storedAdminSession = await AsyncStorage.getItem('admin_session');
-        if (storedAdminSession) {
-          const parsedAdmin = JSON.parse(storedAdminSession);
-          if (parsedAdmin) {
-            setAdminUser(parsedAdmin);
-            setUser(parsedAdmin);
-            setIsAdminAuthenticated(true);
-          }
-        }
-        const storedUser = await AsyncStorage.getItem('user');
+        // Always force login screen on fresh launch / initial page load
+        setIsAdminAuthenticated(false);
+        setAdminUser(null);
+
         const storedContacts = await AsyncStorage.getItem('contacts');
         const storedReports = await AsyncStorage.getItem('incident_reports');
         const storedColleges = await AsyncStorage.getItem('managed_colleges');
         const storedTheme = await AsyncStorage.getItem('appTheme') as 'light' | 'dark';
         
-        if (storedUser && !storedAdminSession) {
-          const parsedU = JSON.parse(storedUser);
-          if (parsedU) setUser(parsedU);
-        }
         if (storedContacts) setContacts(JSON.parse(storedContacts));
 
         let localReports: IncidentReport[] = INITIAL_MOCK_REPORTS;
