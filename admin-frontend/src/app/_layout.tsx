@@ -4,8 +4,6 @@ import { AppProvider, useAppContext } from '../context/AppContext';
 import { Colors } from '../constants/Colors';
 import { useFonts } from 'expo-font';
 
-import AIChatbotFloating from '../components/AIChatbotFloating';
-
 function InnerLayout() {
   const { theme } = useAppContext();
   
@@ -17,7 +15,6 @@ function InnerLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="authority-dashboard" />
       </Stack>
-      <AIChatbotFloating />
     </>
   );
 }
